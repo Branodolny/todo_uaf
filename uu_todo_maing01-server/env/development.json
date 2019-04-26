@@ -1,0 +1,12 @@
+{
+  "port": 8090,
+  "uuSubAppDataStoreMap": {
+    "primary": "mongodb://127.0.0.1:27017/todoMainPrimary"
+  },
+  "privilegedUserMap": {
+    "asidOwner": "13-2838-1"
+  },
+  "tid": "00000000000000000000000000000000",
+  "asid": "11111111111111111111111111111111",
+  "log_level": "INFO"
+}

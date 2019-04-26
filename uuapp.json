@@ -1,0 +1,20 @@
+{
+  "product": "uu_todo_maing01",
+  "version": "0.1.0",
+  "license": "License Commercial",
+  "description": {
+    "en": "",
+    "cs": ""
+  },
+  "uu_todo_maing01-client": {
+    "namespace": "UuTodo"
+  },
+  "uu_todo_maing01-server": {
+    "devkit": {
+      "development": {
+        "appBoxLocationUri": "----- VALUE REQUIRED -----",
+        "appDeploymentUri": null
+      }
+    }
+  }
+}
