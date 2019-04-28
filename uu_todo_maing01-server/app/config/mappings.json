@@ -14,7 +14,7 @@
       "index": {
         "realization": "controllers/TodoMainController.index",
         "httpMethod": "GET",
-        "type": "UVE"
+        "type": "CMD"
       },
       "list/create": {
         "realization": "controllers/TodoListController.create",
@@ -36,6 +36,11 @@
         "httpMethod": "POST",
         "type": "CMD"
       },
+      "list/list": {
+        "realization": "controllers/TodoListController.list",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
       "item/create": {
         "realization": "controllers/TodoItemController.create",
         "httpMethod": "POST",
@@ -45,6 +50,21 @@
         "realization": "controllers/TodoItemController.get",
         "httpMethod": "GET",
         "type": "CMD"
+      },
+      "listsManagement": {
+        "realization": "index.html",
+        "httpMethod": "GET",
+        "type": "UVE"
+      },
+      "items": {
+        "realization": "index.html",
+        "httpMethod": "GET",
+        "type": "UVE"
+      },
+      "login": {
+        "realization": "index.html",
+        "httpMethod": "GET",
+        "type": "UVE"
       }
     }
   }

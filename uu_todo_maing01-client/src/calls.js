@@ -17,6 +17,18 @@ let Calls = {
     let commandUri = Calls.getCommandUri("loadDemoContent");
     Calls.call("get", commandUri, dtoIn);
   },
+  sayHello(dtoIn) {
+    let commandUri = Calls.getCommandUri("/index");
+    Calls.call("get", commandUri, dtoIn);
+  },
+  listList(dtoIn) {
+    let commandUri = Calls.getCommandUri("list/list");
+    Calls.call("get", commandUri, dtoIn);
+  },
+  updateList(dtoIn){
+    let commandUri = Calls.getCommandUri("list/update");
+    Calls.call("post", commandUri, dtoIn);
+  },
 
   /*
   For calling command on specific server, in case of developing client site with already deployed

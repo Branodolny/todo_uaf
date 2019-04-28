@@ -17,6 +17,8 @@ const AUTHORITIES = "Authorities";
 const EXECUTIVES = "Executives";
 const DEFAULTS = {
   forceDelete: false,
+  pageSize: 1000,
+  pageIndex: 0
 };
 
 class TodoListModel {
@@ -138,98 +140,7 @@ class TodoListModel {
 
   }
 
-  async update(awid, dtoIn, session, authorizationResult) {
-    // HDS 1
-    let validationResult = this.validator.validate("updateListDtoInType", dtoIn);
-    // A1, A2
-    let uuAppErrorMap = ValidationHelper.processValidationResult(
-      dtoIn,
-      validationResult,
-      WARNINGS.createUnsupportedKeys.code,
-      Errors.Create.InvalidDtoIn
-    );
 
-
-    let authorizedProfiles = authorizationResult.getAuthorizedProfiles();
-
-    if (
-      !authorizedProfiles.includes(AUTHORITIES) &&
-      !authorizedProfiles.includes(EXECUTIVES)
-    ) {
-      throw new Errors.Create.UserNotAuthorized({}, {state: 403});
-    }
-
-    dtoIn.awid = awid;
-    dtoIn.id = dtoIn.list;
-
-    let list = await this.dao.get(awid, dtoIn.id);
-    console.log(list);
-    if (!list) {
-      throw new Errors.Update.listDoesNotExist(uuAppErrorMap, {Id: dtoIn.id});
-    }
-
-    try {
-      list = await this.dao.update(dtoIn);
-    } catch (e) {
-      if (e instanceof ObjectStoreError) {
-        //A3
-        throw new Errors.Update.listDaoUpdateFailed({uuAppErrorMap}, e);
-      }
-      throw e;
-    }
-
-
-    list.uuAppErrorMap = uuAppErrorMap;
-    return list;
-
-
-  }
-
-  async update(awid, dtoIn, session, authorizationResult) {
-    // HDS 1
-    let validationResult = this.validator.validate("updateListDtoInType", dtoIn);
-    // A1, A2
-    let uuAppErrorMap = ValidationHelper.processValidationResult(
-      dtoIn,
-      validationResult,
-      WARNINGS.createUnsupportedKeys.code,
-      Errors.Create.InvalidDtoIn
-    );
-
-
-    let authorizedProfiles = authorizationResult.getAuthorizedProfiles();
-
-    if (
-      !authorizedProfiles.includes(AUTHORITIES) &&
-      !authorizedProfiles.includes(EXECUTIVES)
-    ) {
-      throw new Errors.Update.UserNotAuthorized({}, {state: 403});
-    }
-
-    dtoIn.awid = awid;
-    dtoIn.id = dtoIn.list;
-
-    let list = await this.dao.get(awid, dtoIn.id);
-    if (!list) {
-      throw new Errors.Update.listDoesNotExist(uuAppErrorMap, {Id: dtoIn.id});
-    }
-
-    try {
-      list = await this.dao.update(dtoIn);
-    } catch (e) {
-      if (e instanceof ObjectStoreError) {
-        //A3
-        throw new Errors.Update.listDaoUpdateFailed({uuAppErrorMap}, e);
-      }
-      throw e;
-    }
-
-
-    list.uuAppErrorMap = uuAppErrorMap;
-    return list;
-
-
-  }
 
   async delete(awid, dtoIn, session, authorizationResult) {
     // HDS 1
@@ -298,6 +209,29 @@ class TodoListModel {
     return { uuAppErrorMap };
 
 
+  }
+
+
+  async list(awid, dtoIn) {
+    let validationResult = this.validator.validate("listListsDtoInType", dtoIn);
+    // HDS, A1, A2
+    let uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      WARNINGS.createUnsupportedKeys.code,
+      Errors.Create.InvalidDtoIn
+    );
+    if (!dtoIn.pageInfo) dtoIn.pageInfo = {};
+    if (!dtoIn.pageInfo.pageSize) dtoIn.pageInfo.pageSize = DEFAULTS.pageSize;
+    if (!dtoIn.pageInfo.pageIndex) dtoIn.pageInfo.pageIndex = DEFAULTS.pageIndex;
+    if (!dtoIn.order) dtoIn.order = DEFAULTS.order;
+
+    let list = await this.dao.list(awid, "asc", dtoIn.pageInfo);
+
+
+
+    list.uuAppErrorMap = uuAppErrorMap;
+    return list;
   }
 
 

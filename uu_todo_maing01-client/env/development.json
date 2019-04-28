@@ -1,7 +1,7 @@
 {
-  "port": 1234,
+  "port": 1235,
   "autoOpenInBrowser": false,
-  "basePath": "/uu-todo-main/0-0/",
-  "useMockData": true,
+  "basePath": "/uu-todo-main/00000000000000000000000000000000-11111111111111111111111111111112/",
+  "useMockData": false,
   "uu5Environment": {}
 }

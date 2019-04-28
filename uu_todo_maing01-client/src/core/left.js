@@ -68,7 +68,8 @@ export const Left = createReactClass({
   //@@viewOn:private
   _getItems() {
     return [
-      { code: "home", content: this.getLsiComponent("home") }
+      { code: "home", content: this.getLsiComponent("home") },
+      { code: "list", content: this.getLsiComponent("list") }
     ]
   },
 

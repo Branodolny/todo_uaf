@@ -13,6 +13,9 @@ import Left from "./left.js";
 import Bottom from "./bottom.js";
 import About from "../routes/about.js";
 import Home from "../routes/home.js";
+import SayHello from "../routes/say-hello.js";
+import List from "../routes/list.js";
+
 
 import "./spa-authenticated.less";
 //@@viewOff:imports
@@ -67,18 +70,20 @@ const SpaAuthenticated = createReactClass({
     return (
       <Plus4U5.App.Page
         {...this.getMainPropsToPass()}
-        top={<Plus4U5.App.Top content={this.getLsiComponent("name")} />}
-        bottom={<Bottom />}
+        top={<Plus4U5.App.Top content={this.getLsiComponent("name")}/>}
+        bottom={<Bottom/>}
         type={2}
         displayedLanguages={["cs", "en"]}
-        left={<Left identity={this.props.identity} />}
+        left={<Left identity={this.props.identity}/>}
         leftWidth="!xs-320px !s-320px !m-256px l-256px xl-256px"
       >
         <UU5.Common.Router
           routes={{
             "": "home",
-            "home": { component: <Home identity={this.props.identity} /> },
-            "about": { component: <About identity={this.props.identity} /> }
+            "home": {component: <Home identity={this.props.identity}/>},
+            "about": {component: <About identity={this.props.identity}/>},
+            "say-hello": {component: <SayHello/>},
+            "list": {component: <List/>}
           }}
           controlled={false}
         />

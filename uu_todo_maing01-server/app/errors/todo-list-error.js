@@ -106,9 +106,28 @@ const Delete = {
   }
 };
 
+const List = {
+  UC_CODE: `${LIST_ERROR_PREFIX}listList/`,
+  InvalidDtoIn: class extends TodoMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${List.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  },
+  UserNotAuthorized: class extends TodoMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${List.UC_CODE}userNotAuthorized`;
+      this.message = "User not authorized.";
+    }
+  }
+};
+
 module.exports = {
   Create,
   Get,
   Update,
-  Delete
+  Delete,
+  List
 };

@@ -12,7 +12,15 @@ const Lsi = {
     about: {
       cs: "O aplikaci",
       en: "About Application"
-    }
+    },
+    "say-hello": {
+      cs: "Pozdrav",
+      en: "Say Hello"
+    },
+    "list": {
+      sk: "Zoznam listov",
+      en: "List of lists"
+    },
   },
 
   about: {

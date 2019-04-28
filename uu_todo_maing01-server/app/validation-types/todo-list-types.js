@@ -14,3 +14,10 @@ const updateListDtoInType = shape({
 const deleteListDtoInType = shape({
   id: id().isRequired()
 });
+
+const listListsDtoInType = shape({
+  pageInfo: shape({
+    pageIndex: integer(),
+    pageSize: integer()
+  })
+});
