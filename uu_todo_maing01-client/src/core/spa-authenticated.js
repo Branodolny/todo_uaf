@@ -79,10 +79,9 @@ const SpaAuthenticated = createReactClass({
       >
         <UU5.Common.Router
           routes={{
-            "": "home",
-            "home": {component: <Home identity={this.props.identity}/>},
+            "": "list",
+            "login": {component: <Home identity={this.props.identity}/>},
             "about": {component: <About identity={this.props.identity}/>},
-            "say-hello": {component: <SayHello/>},
             "list": {component: <List/>}
           }}
           controlled={false}

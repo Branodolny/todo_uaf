@@ -6,15 +6,23 @@ const {ValidationHelper} = require("uu_appg01_server").AppServer;
 const Errors = require("../errors/todo-list-error.js");
 
 const WARNINGS = {
-
   createUnsupportedKeys: {
     code: `${Errors.Create.UC_CODE}unsupportedKeys`
+  },
+  getUnsupportedKeys: {
+    code: `${Errors.Get.UC_CODE}unsupportedKeys`
+  },
+  updateUnsupportedKeys: {
+    code: `${Errors.Update.UC_CODE}unsupportedKeys`
+  },
+  deleteUnsupportedKeys: {
+    code: `${Errors.Delete.UC_CODE}unsupportedKeys`
+  },
+  listUnsupportedKeys: {
+    code: `${Errors.List.UC_CODE}unsupportedKeys`
   }
-
 };
 
-const AUTHORITIES = "Authorities";
-const EXECUTIVES = "Executives";
 const DEFAULTS = {
   forceDelete: false,
   pageSize: 1000,
@@ -29,7 +37,7 @@ class TodoListModel {
     this.itemDao = DaoFactory.getDao("item");
   }
 
-  async create(awid, dtoIn, session, authorizationResult) {
+  async create(awid, dtoIn) {
     // HDS 1
     let validationResult = this.validator.validate("createListDtoInType", dtoIn);
     // A1, A2
@@ -39,16 +47,6 @@ class TodoListModel {
       WARNINGS.createUnsupportedKeys.code,
       Errors.Create.InvalidDtoIn
     );
-
-
-    let authorizedProfiles = authorizationResult.getAuthorizedProfiles();
-
-    if (
-      !authorizedProfiles.includes(AUTHORITIES) &&
-      !authorizedProfiles.includes(EXECUTIVES)
-    ) {
-      throw new Errors.Create.UserNotAuthorized({}, {state: 403});
-    }
 
     dtoIn.awid = awid;
 
@@ -76,8 +74,8 @@ class TodoListModel {
     let uuAppErrorMap = ValidationHelper.processValidationResult(
       dtoIn,
       validationResult,
-      WARNINGS.createUnsupportedKeys.code,
-      Errors.Create.InvalidDtoIn
+      WARNINGS.getUnsupportedKeys.code,
+      Errors.Get.InvalidDtoIn
     );
 
 
@@ -93,26 +91,16 @@ class TodoListModel {
     return list;
   }
 
-  async update(awid, dtoIn, session, authorizationResult) {
+  async update(awid, dtoIn) {
     // HDS 1
     let validationResult = this.validator.validate("updateListDtoInType", dtoIn);
     // A1, A2
     let uuAppErrorMap = ValidationHelper.processValidationResult(
       dtoIn,
       validationResult,
-      WARNINGS.createUnsupportedKeys.code,
-      Errors.Create.InvalidDtoIn
+      WARNINGS.updateUnsupportedKeys.code,
+      Errors.Update.InvalidDtoIn
     );
-
-
-    let authorizedProfiles = authorizationResult.getAuthorizedProfiles();
-
-    if (
-      !authorizedProfiles.includes(AUTHORITIES) &&
-      !authorizedProfiles.includes(EXECUTIVES)
-    ) {
-      throw new Errors.Update.UserNotAuthorized({}, {state: 403});
-    }
 
     dtoIn.awid = awid;
     dtoIn.id = dtoIn.list;
@@ -141,29 +129,18 @@ class TodoListModel {
   }
 
 
-
-  async delete(awid, dtoIn, session, authorizationResult) {
+  async delete(awid, dtoIn) {
     // HDS 1
     let validationResult = this.validator.validate("deleteListDtoInType", dtoIn);
     // A1, A2
     let uuAppErrorMap = ValidationHelper.processValidationResult(
       dtoIn,
       validationResult,
-      WARNINGS.createUnsupportedKeys.code,
+      WARNINGS.deleteUnsupportedKeys.code,
       Errors.Delete.InvalidDtoIn
     );
 
-
-    let authorizedProfiles = authorizationResult.getAuthorizedProfiles();
-
-    if (
-      !authorizedProfiles.includes(AUTHORITIES) &&
-      !authorizedProfiles.includes(EXECUTIVES)
-    ) {
-      throw new Errors.Delete.UserNotAuthorized({}, {state: 403});
-    }
-
-
+    //HDS 1.4
     if (!dtoIn.forceDelete) dtoIn.forceDelete = DEFAULTS.forceDelete;
     dtoIn.awid = awid;
 
@@ -172,43 +149,48 @@ class TodoListModel {
       throw new Errors.Delete.listDoesNotExist(uuAppErrorMap, {Id: dtoIn.id});
     }
 
+    if (dtoIn.forceDelete) {
+      let items = {};
+      let count = await this.itemDao.countItemByList(awid, dtoIn.id);
+      // HDS 2.3
+      if (count > 0) {
+        try {
+          let filter = {
+            list: dtoIn.id
+          };
+          items = await this.itemDao.listByListAndCompleted(awid, dtoIn, filter);
+          console.log(items);
+        } catch (e) {
+          throw new Errors.Delete.itemDoesNotExist({uuAppErrorMap}, {id: dtoIn.id});
+        }
+        try {
+          let filter = {
+            _id: {
+              $in: items.itemList
+            }
+          };
+          // HDS 2.2, A4
+          await this.itemDao.deleteMany(awid, filter);
+        } catch (e) {
+          throw new Errors.Delete.itemsDaoDeleteFailed({uuAppErrorMap}, {id: dtoIn.id});
+        }
+      }
 
-    if (!dtoIn.forceDelete) {
-      // hds 3.1
-      let count;
-      try {
-        count = await this.itemDao.getCountByListId(awid, dtoIn.id);
-      } catch (e) {
-        //  A5
-        if (e instanceof ObjectStoreError) {
-          throw new Errors.Delete.ItemDaoGetCountByListFailed({ uuAppErrorMap }, e);
-        }
-        throw e;
-      }
-      if (count !== 0) {
-        // A6
-        throw new Errors.Delete.listNotEmpty({ uuAppErrorMap }, {"Nr. items in ": count });
-      }
     } else {
-      // hds 3.2
-      try {
-        await this.itemDao.removeListsItems(awid, dtoIn.id);
-      } catch (e) {
-        if (e instanceof ObjectStoreError) {
-          // A7
-          throw new Errors.Delete.itemDaoDeleteFailed({ uuAppErrorMap }, e);
-        }
-        throw e;
+      // HDS 2.1, A3
+      let count = await this.itemDao.countItemByList(awid, dtoIn.id);
+      if (count > 0) {
+        throw  new Errors.Delete.listNotEmpty({uuAppErrorMap}, {id: dtoIn.id});
       }
     }
 
-    // hds 4
-    await this.dao.delete(awid, dtoIn.id);
-
-    // hds 5
-    return { uuAppErrorMap };
-
-
+    // HDS 3, A5
+    try {
+      await this.dao.delete(awid, dtoIn.id);
+    } catch (e) {
+      throw new Errors.Delete.listDaoDeleteFailed({uuAppErrorMap}, {id: dtoIn.id});
+    }
+    return {uuAppErrorMap};
   }
 
 
@@ -218,8 +200,8 @@ class TodoListModel {
     let uuAppErrorMap = ValidationHelper.processValidationResult(
       dtoIn,
       validationResult,
-      WARNINGS.createUnsupportedKeys.code,
-      Errors.Create.InvalidDtoIn
+      WARNINGS.listUnsupportedKeys.code,
+      Errors.List.InvalidDtoIn
     );
     if (!dtoIn.pageInfo) dtoIn.pageInfo = {};
     if (!dtoIn.pageInfo.pageSize) dtoIn.pageInfo.pageSize = DEFAULTS.pageSize;
@@ -227,8 +209,6 @@ class TodoListModel {
     if (!dtoIn.order) dtoIn.order = DEFAULTS.order;
 
     let list = await this.dao.list(awid, "asc", dtoIn.pageInfo);
-
-
 
     list.uuAppErrorMap = uuAppErrorMap;
     return list;

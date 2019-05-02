@@ -21,13 +21,7 @@ const Create = {
       this.message = "Create list DAO create failed.";
     }
   },
-  UserNotAuthorized: class extends TodoMainUseCaseError {
-    constructor() {
-      super(...arguments);
-      this.code = `${Create.UC_CODE}userNotAuthorized`;
-      this.message = "User not authorized.";
-    }
-  }
+
 };
 
 const Get = {
@@ -36,7 +30,7 @@ const Get = {
   InvalidDtoIn: class extends TodoMainUseCaseError {
     constructor() {
       super(...arguments);
-      this.code = `${Create.UC_CODE}invalidDtoIn`;
+      this.code = `${Get.UC_CODE}invalidDtoIn`;
       this.message = "DtoIn is not valid.";
     }
   },
@@ -44,7 +38,7 @@ const Get = {
   listDoesNotExist: class extends TodoMainUseCaseError {
     constructor() {
       super(...arguments);
-      this.code = `${Create.UC_CODE}listDaoCreateFailed`;
+      this.code = `${Get.UC_CODE}listDaoCreateFailed`;
       this.message = "List doesn't exists.";
     }
   }
@@ -94,16 +88,24 @@ const Delete = {
     constructor() {
       super(...arguments);
       this.code = `${Delete.UC_CODE}listDaoDeleteFailed`;
-      this.message = "List update failed.";
+      this.message = "List delete failed.";
     }
   },
-  UserNotAuthorized: class extends TodoMainUseCaseError {
+  itemsDaoDeleteFailed: class extends TodoMainUseCaseError {
     constructor() {
       super(...arguments);
-      this.code = `${Delete.UC_CODE}userNotAuthorized`;
-      this.message = "User not authorized.";
+      this.code = `${Delete.UC_CODE}itemsDaoDeleteFailed`;
+      this.message = "Items delete failed.";
+    }
+  },
+  listNotEmpty: class extends TodoMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Delete.UC_CODE}listNotEmpty`;
+      this.message = "List is not empty.";
     }
   }
+
 };
 
 const List = {
@@ -115,13 +117,7 @@ const List = {
       this.message = "DtoIn is not valid.";
     }
   },
-  UserNotAuthorized: class extends TodoMainUseCaseError {
-    constructor() {
-      super(...arguments);
-      this.code = `${List.UC_CODE}userNotAuthorized`;
-      this.message = "User not authorized.";
-    }
-  }
+
 };
 
 module.exports = {

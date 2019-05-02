@@ -1,13 +1,11 @@
-const path = require("path");
-const fs = require("fs");
-const { DaoFactory } = require("uu_appg01_server").ObjectStore;
-
+const {DaoFactory}=require("uu_appg01_server").ObjectStore;
 const TODO_INSTANCE_INIT = "init";
 const TODO_INSTANCE_LOAD = "load";
 const TODO_INSTANCE_UPDATE = "update";
 const ITEM_CREATE = "item/create";
 const ITEM_GET = "item/get";
 const ITEM_UPDATE = "item/update";
+const ITEM_COMPLETE = "item/complete";
 const ITEM_DELETE = "item/delete";
 const ITEM_LIST = "item/list";
 const LIST_CREATE = "list/create";
@@ -15,7 +13,6 @@ const LIST_GET = "list/get";
 const LIST_UPDATE = "list/update";
 const LIST_DELETE = "list/delete";
 const LIST_LIST = "list/list";
-const MONGO_ID = "012345678910111213141516";
 
 
 const mockDaoFactory = () => {
@@ -27,21 +24,7 @@ const mockDaoFactory = () => {
   });
 };
 
-const getSessionMock = uuIdentity => {
-  let identity = {
-    getUuIdentity: () => uuIdentity,
-    getName: () => {}
-  };
-  return {
-    getIdentity: () => identity
-  };
-};
 
-const getAuthzResultMock = () => {
-  return {
-    getAuthorizedProfiles: () => []
-  };
-};
 
 module.exports = {
   TODO_INSTANCE_INIT,
@@ -50,6 +33,7 @@ module.exports = {
   ITEM_CREATE,
   ITEM_GET,
   ITEM_UPDATE,
+  ITEM_COMPLETE,
   ITEM_DELETE,
   ITEM_LIST,
   LIST_CREATE,
@@ -57,8 +41,5 @@ module.exports = {
   LIST_UPDATE,
   LIST_DELETE,
   LIST_LIST,
-  MONGO_ID,
-  mockDaoFactory,
-  getSessionMock,
-  getAuthzResultMock
+  mockDaoFactory
 };

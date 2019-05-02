@@ -12,7 +12,8 @@ const updateListDtoInType = shape({
 });
 
 const deleteListDtoInType = shape({
-  id: id().isRequired()
+  id: id().isRequired(),
+  forceDelete: boolean()
 });
 
 const listListsDtoInType = shape({

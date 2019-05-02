@@ -21,13 +21,7 @@ const Create = {
       this.message = "List doesn't exists.";
     }
   },
-  UserNotAuthorized: class extends TodoMainUseCaseError {
-    constructor() {
-      super(...arguments);
-      this.code = `${Create.UC_CODE}userNotAuthorized`;
-      this.message = "User not authorized.";
-    }
-  },
+
   itemDaoCreateFailed: class extends TodoMainUseCaseError {
     constructor() {
       super(...arguments);
@@ -43,7 +37,7 @@ const Get = {
   InvalidDtoIn: class extends TodoMainUseCaseError {
     constructor() {
       super(...arguments);
-      this.code = `${Create.UC_CODE}invalidDtoIn`;
+      this.code = `${Get.UC_CODE}invalidDtoIn`;
       this.message = "DtoIn is not valid.";
     }
   },
@@ -51,7 +45,7 @@ const Get = {
   itemDoesNotExist: class extends TodoMainUseCaseError {
     constructor() {
       super(...arguments);
-      this.code = `${Create.UC_CODE}itemDoesNotExist`;
+      this.code = `${Get.UC_CODE}itemDoesNotExist`;
       this.message = "Item doesn't exists.";
     }
   }
@@ -66,18 +60,42 @@ const Update = {
       this.message = "DtoIn is not valid.";
     }
   },
-  listDoesNotExist: class extends TodoMainUseCaseError {
+  itemDoesNotExist: class extends TodoMainUseCaseError {
     constructor() {
       super(...arguments);
-      this.code = `${Update.UC_CODE}listDaoCreateFailed`;
+      this.code = `${Update.UC_CODE}itemDaoCreateFailed`;
       this.message = "Item doesn't exists.";
     }
   },
-  listDaoUpdateFailed: class extends TodoMainUseCaseError {
+  itemDaoUpdateFailed: class extends TodoMainUseCaseError {
     constructor() {
       super(...arguments);
-      this.code = `${Update.UC_CODE}listDaoUpdateFailed`;
+      this.code = `${Update.UC_CODE}itemDaoUpdateFailed`;
       this.message = "Item update failed.";
+    }
+  }
+};
+const Complete = {
+  UC_CODE: `${LIST_ERROR_PREFIX}completeItem/`,
+  InvalidDtoIn: class extends TodoMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Complete.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  },
+  itemDoesNotExist: class extends TodoMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Complete.UC_CODE}itemDaoCompleteFailed`;
+      this.message = "Item doesn't exists.";
+    }
+  },
+  itemDaoUpdateFailed: class extends TodoMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Complete.UC_CODE}itemDaoCompleteFailed`;
+      this.message = "Item complete failed.";
     }
   }
 };
@@ -90,32 +108,45 @@ const Delete = {
       this.message = "DtoIn is not valid.";
     }
   },
-  listDoesNotExist: class extends TodoMainUseCaseError {
+  itemDoesNotExist: class extends TodoMainUseCaseError {
     constructor() {
       super(...arguments);
-      this.code = `${Delete.UC_CODE}listDaoCreateFailed`;
+      this.code = `${Delete.UC_CODE}itemDaoDeleteFailed`;
       this.message = "Item doesn't exists.";
     }
   },
-  listDaoDeleteFailed: class extends TodoMainUseCaseError {
+  itemDaoDeleteFailed: class extends TodoMainUseCaseError {
     constructor() {
       super(...arguments);
-      this.code = `${Delete.UC_CODE}listDaoDeleteFailed`;
-      this.message = "Item update failed.";
+      this.code = `${Delete.UC_CODE}itemDaoDeleteFailed`;
+      this.message = "Item delete failed.";
     }
   },
-  UserNotAuthorized: class extends TodoMainUseCaseError {
+
+};
+const List = {
+  UC_CODE: `${LIST_ERROR_PREFIX}listItem/`,
+  InvalidDtoIn: class extends TodoMainUseCaseError {
     constructor() {
       super(...arguments);
-      this.code = `${Delete.UC_CODE}userNotAuthorized`;
-      this.message = "User not authorized.";
+      this.code = `${List.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
     }
-  }
-};
+  },
+  itemDaoListFailed: class extends TodoMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${List.UC_CODE}itemDaoListFailed`;
+      this.message = "Item list failed.";
+    }
+  },
 
+};
 module.exports = {
   Create,
   Get,
   Update,
-  Delete
+  Delete,
+  List,
+  Complete
 };

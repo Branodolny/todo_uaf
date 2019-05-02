@@ -11,11 +11,6 @@
         "httpMethod": "GET",
         "type": "UVE"
       },
-      "index": {
-        "realization": "controllers/TodoMainController.index",
-        "httpMethod": "GET",
-        "type": "CMD"
-      },
       "list/create": {
         "realization": "controllers/TodoListController.create",
         "httpMethod": "POST",
@@ -48,6 +43,26 @@
       },
       "item/get": {
         "realization": "controllers/TodoItemController.get",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "item/update": {
+        "realization": "controllers/TodoItemController.update",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "item/complete": {
+        "realization": "controllers/TodoItemController.complete",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "item/delete": {
+        "realization": "controllers/TodoItemController.delete",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "item/list": {
+        "realization": "controllers/TodoItemController.list",
         "httpMethod": "GET",
         "type": "CMD"
       },

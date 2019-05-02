@@ -31,11 +31,11 @@ class ListMongo extends UuObjectDao {
     return await super.findOneAndUpdate(filter, uuObject, "NONE");
   }
 
-  async delele(awid, id) {
+  async delete(awid, id) {
     await super.deleteOne({awid, id});
   }
 
-  async deleleByCode(awid, code) {
+  async deleteByCode(awid, code) {
     await super.deleteOne({awid, id});
   }
 
