@@ -1,55 +1,40 @@
 //@@viewOn:imports
 import React from "react";
 import createReactClass from "create-react-class";
-import PropTypes from "prop-types";
 import * as UU5 from "uu5g04";
 import "uu5g04-bricks";
 import * as Plus4U5 from "uu_plus4u5g01";
 import "uu_plus4u5g01-app";
 
 import Config from "./config/config.js";
-import Lsi from "../config/lsi.js";
 import Left from "./left.js";
 import Bottom from "./bottom.js";
 import About from "../routes/about.js";
-import Home from "../routes/home.js";
-import List from "../routes/list.js";
+import Login from "../routes/not-authenticated.js";
 
-
-import "./spa-authenticated.less";
+import "./spa-not-authenticated.less";
+import LSI from "./spa-not-authenticated-lsi.js";
 //@@viewOff:imports
 
-const SpaAuthenticated = createReactClass({
+const SpaNotAuthenticated = createReactClass({
   //@@viewOn:mixins
-  mixins: [
-    UU5.Common.BaseMixin
-  ],
+  mixins: [UU5.Common.BaseMixin],
   //@@viewOff:mixins
 
   //@@viewOn:statics
   statics: {
-    tagName: Config.TAG + "SpaAuthenticated",
+    tagName: Config.TAG + "SpaNotAuthenticated",
     classNames: {
-      main: Config.CSS + "spaauthenticated"
+      main: Config.CSS + "spanotauthenticated"
     },
-    lsi: {
-      name: Lsi.appName
-    }
+    lsi: LSI
   },
   //@@viewOff:statics
 
   //@@viewOn:propTypes
-  propTypes: {
-    identity: PropTypes.shape()
-  },
   //@@viewOff:propTypes
 
   //@@viewOn:getDefaultProps
-  getDefaultProps() {
-    return {
-      identity: null
-    }
-  },
   //@@viewOff:getDefaultProps
 
   //@@viewOn:reactLifeCycle
@@ -69,21 +54,21 @@ const SpaAuthenticated = createReactClass({
     return (
       <Plus4U5.App.Page
         {...this.getMainPropsToPass()}
-        top={<Plus4U5.App.Top content={this.getLsiComponent("name")}/>}
-        bottom={<Bottom/>}
-        type={2}
+        top={<Plus4U5.App.Top content={this.getLsiComponent("appName")} />}
+        bottom={<Bottom />}
+        type={1}
         displayedLanguages={["cs", "en"]}
-        left={<Left identity={this.props.identity}/>}
+        left={<Left />}
         leftWidth="!xs-320px !s-320px !m-256px l-256px xl-256px"
       >
         <UU5.Common.Router
+          route=""
+          notFoundRoute="login"
           routes={{
-            "": "list",
-            // "login": {component: <Home identity={this.props.identity}/>},
-            "about": {component: <About identity={this.props.identity}/>},
-            "list": {component: <List/>}
+            login: { component: <Login /> },
+            "": "login",
+            about: { component: <About /> }
           }}
-          controlled={false}
         />
       </Plus4U5.App.Page>
     );
@@ -91,4 +76,4 @@ const SpaAuthenticated = createReactClass({
   //@@viewOff:render
 });
 
-export default SpaAuthenticated;
+export default SpaNotAuthenticated;

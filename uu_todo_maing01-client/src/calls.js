@@ -3,33 +3,47 @@
  */
 import { Uri } from "uu_appg01_core";
 import * as UU5 from "uu5g04";
+import {Client} from "uu_appg01";
 import Plus4U5 from "uu_plus4u5g01";
 
 let Calls = {
   /** URL containing app base, e.g. "https://uuos9.plus4u.net/vnd-app/tid-awid/". */
   APP_BASE_URI: location.protocol + "//" + location.host + UU5.Environment.getAppBasePath(),
 
+  // call(method, url, dtoIn, clientOptions) {
+  //   return Plus4U5.Common.Calls.call(method, url, dtoIn, clientOptions);
+  // },
   call(method, url, dtoIn, clientOptions) {
-    return Plus4U5.Common.Calls.call(method, url, dtoIn, clientOptions);
+    Client[method](url, dtoIn.data, clientOptions).then(
+      response => typeof dtoIn.done === "function" && dtoIn.done(response || {}),
+      response => typeof dtoIn.fail === "function" && dtoIn.fail(response || {})
+    );
   },
-
-  loadDemoContent(dtoIn) {
-    let commandUri = Calls.getCommandUri("loadDemoContent");
-    Calls.call("get", commandUri, dtoIn);
-  },
-  // sayHello(dtoIn) {
-  //   let commandUri = Calls.getCommandUri("/index");
+  // loadDemoContent(dtoIn) {
+  //   let commandUri = Calls.getCommandUri("loadDemoContent");
   //   Calls.call("get", commandUri, dtoIn);
   // },
+
   listList(dtoIn) {
     let commandUri = Calls.getCommandUri("list/list");
     Calls.call("get", commandUri, dtoIn);
   },
-  updateList(dtoIn){
+  listCreate(dtoIn) {
+    let commandUri = Calls.getCommandUri("list/create");
+    Calls.call("post", commandUri, dtoIn);
+  },
+  editList(dtoIn){
     let commandUri = Calls.getCommandUri("list/update");
     Calls.call("post", commandUri, dtoIn);
   },
-
+  deleteList(dtoIn){
+    let commandUri = Calls.getCommandUri("list/delete");
+    Calls.call("post", commandUri, dtoIn);
+  },
+  itemList(dtoIn){
+    let commandUri = Calls.getCommandUri("item/list");
+    Calls.call("get", commandUri, dtoIn);
+  },
   /*
   For calling command on specific server, in case of developing client site with already deployed
   server in uuCloud etc. You can specify url of this application (or part of url) in development

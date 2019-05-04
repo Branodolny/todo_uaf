@@ -57,12 +57,7 @@ const NotAuthenticated = createReactClass({
         <WelcomeRow textPadding="14px" icon="mdi-human-greeting">
           {this.getLsiComponent("intro")}
         </WelcomeRow>
-        <WelcomeRow textPadding="10px" icon="mdi-monitor">
-          {this.getLsiComponent("clientSide")}
-        </WelcomeRow>
-        <WelcomeRow textPadding="8px" icon="mdi-server">
-          {this.getLsiComponent("serverSide")}
-        </WelcomeRow>
+
         <WelcomeRow className={this.getClassName("login")} textPadding="14px" icon="mdi-account-key">
           <UU5.Bricks.Span>
             {this.getLsiComponent("login")}

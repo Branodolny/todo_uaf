@@ -40,16 +40,13 @@ const Lsi = {
 
   notAuth: {
     welcome: {
-      cs: "Vítejte v šabloně pro aplikace uuAppTemplate",
-      en: "Welcome in application template uuAppTemplate"
+      cs: "TODO list!",
+      en: "TODO list!"
     },
 
     intro: {
-      cs: `Tato šablona obsahuje připravenou klientskou a serverovou část. Jednotlivé komponety, které jsou zde zobrazeny,
-          jsou určeny k tomu, aby demonstrovaly možnosti a způsob použití. Je vhodné je upravit, zkopírovat či smazat pro
-          potřeby vyvíjené aplikace.`,
-      en: `This template consist of prepared client and server side. Shown components demonstrate possibilities and way of
-          using. For application developing purposes they are suitable for modifying, copying and deleting.`
+      cs: `Na prácu z aplikáciou je nutné sa prihlásiť.`,
+      en: `Before you should work with TODO application is necessary to login.`
     },
 
     clientSide: {

@@ -68,8 +68,8 @@ export const Left = createReactClass({
   //@@viewOn:private
   _getItems() {
     return [
-      { code: "home", content: this.getLsiComponent("home") },
-      { code: "list", content: this.getLsiComponent("list") }
+      { code: "list", content: this.getLsiComponent("list") },
+      { code: "about", content: this.getLsiComponent("about") }
     ]
   },
 
@@ -97,9 +97,6 @@ export const Left = createReactClass({
           onCtrlClick={Tools.openNewTab}
         />
 
-        <LeftLink route="about">
-          {this.getLsiComponent("about")}
-        </LeftLink>
       </UU5.Bricks.Div>
     );
   }

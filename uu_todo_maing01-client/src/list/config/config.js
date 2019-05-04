@@ -3,6 +3,6 @@ import Config from "../../config/config.js";
 export default {
   ...Config,
 
-  TAG: Config.TAG + "list.",
+  TAG: Config.TAG + "List.",
   CSS: Config.CSS + "list-"
 };
