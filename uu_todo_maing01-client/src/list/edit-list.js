@@ -14,7 +14,7 @@ import NewList from "./new-list";
 import ListDetail from "./list-detail";
 //@@viewOff:imports
 
-export const editList = createReactClass({
+export const EditList = createReactClass({
   //@@viewOn:mixins
   mixins: [UU5.Common.BaseMixin, UU5.Common.RouteMixin, UU5.Common.CallsMixin, UU5.Forms.FormMixin, UU5.Common.ContentMixin],
   //@@viewOff:mixins
@@ -72,8 +72,16 @@ export const editList = createReactClass({
             <UU5.Bricks.Column colWidth="xs-12 s-8">
               <UU5.Forms.Form
                 progressIndicator={<UU5.Bricks.Loading/>}
+                onCancel={
+                  (opt) => {
+                    UU5.Environment.setRoute({component: <ListDetail list={this.props.list}/>})
+                  }
+                }
                 onSave={(opt) => {
-
+                  this.setState({
+                      listname: opt.values.name
+                    }
+                  );
                   Calls.editList({
                     data: {
                       list: this.props.list.id,
@@ -85,11 +93,11 @@ export const editList = createReactClass({
                 }}
                 onSaveDone={(opt) => {
                   opt.component.getAlertBus().setAlert({
-                    content: "List " + this.props.list.name+ " was renamed to "+opt.values.name+"",
+                    content: "List " + this.props.list.name+ " was renamed to "+this.state.listname+"",
                     colorSchema: "success"
                   });
                   opt.component.reset();
-                  UU5.Environment.setRoute({component: <ListDetail list={this.props.list}/>});
+                  UU5.Environment.setRoute({component: <ListDetail list={opt.dtoOut.data}/>});
                 }}
                 onSaveFail={(opt) => {
                   console.log(opt);
@@ -100,13 +108,13 @@ export const editList = createReactClass({
                 }}
               >
 
-                <UU5.Forms.Controls/>
                 <UU5.Forms.Text name="name"
                                 label="New list name"
-                                placeholder={this.props.list.name}
                                 required
+                                value={this.props.list.name}
                                 shouldValidateRequired={true}
                                 onValidate={this._validateName}/>
+                <UU5.Forms.Controls/>
               </UU5.Forms.Form>
             </UU5.Bricks.Column>
           </UU5.Bricks.Row>
@@ -117,4 +125,4 @@ export const editList = createReactClass({
   //@@viewOff:render
 });
 
-export default DeleteList;
+export default EditList;

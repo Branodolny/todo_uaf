@@ -151,8 +151,9 @@ class TodoItemModel {
     dtoIn.awid = awid;
     dtoIn.id = dtoIn.item;
     //HDS 1.4
-    if (!dtoIn.complete) dtoIn.complete = DEFAULTS.completed;
-
+    if (dtoIn.complete == "undefined") {
+      dtoIn.complete = DEFAULTS.completed;
+    }
     let list = await this.daoList.get(awid, dtoIn.list);
     if (!list) {
       throw new ErrorsList.Update.listDoesNotExist(uuAppErrorMap, {Id: dtoIn.list});

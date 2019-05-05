@@ -9,29 +9,31 @@ import Config from "./config/config.js";
 import Calls from "calls";
 
 
-import "./new-list.less";
-import ListDetail from "./list-detail";
+import "./new-item.less";
+import ListDetail from "../list/list-detail";
+import ItemDetail from "./item-detail";
 //@@viewOff:imports
 
-export const NewList = createReactClass({
+export const NewItem = createReactClass({
   //@@viewOn:mixins
   mixins: [UU5.Common.BaseMixin, UU5.Common.RouteMixin, UU5.Common.CallsMixin, UU5.Forms.FormMixin],
   //@@viewOff:mixins
 
   //@@viewOn:statics
   statics: {
-    tagName: Config.TAG + "NewList",
+    tagName: Config.TAG + "NewItem",
     classNames: {
-      main: Config.CSS + "newList"
+      main: Config.CSS + "newItem"
     }, calls: {
-      listCreate: "listCreate",
+      listCreate: "itemCreate",
     }
   },
   //@@viewOff:statics
 
   //@@viewOn:propTypes
   propTypes: {
-    lists: Proptypes.array,
+    items: Proptypes.array,
+    list: Proptypes.object,
   },
   //@@viewOff:propTypes
 
@@ -41,7 +43,7 @@ export const NewList = createReactClass({
   //@@viewOn:reactLifeCycle
   getInitialState() {
     return {
-      lists: this.props.lists || 0
+      items: this.props.items
     };
   },
   componentWillMount() {
@@ -59,14 +61,14 @@ export const NewList = createReactClass({
   _validateName(opt) {
     console.log(opt);
     console.log(this.state.lists);
-    this.state.lists.map((list) => {
-      console.log(list);
-      console.log(list.name);
+    this.state.items.map((item) => {
+      console.log(item);
+      console.log(item.name);
       console.log(opt.value);
-      if (list.name == opt.value) {
+      if (item.name == opt.value) {
         return {
           feedback: "error",
-          message: "List with name " + list.name + " exist!"
+          message: "Item with name " + item.name + " exist!"
         };
       }
     })
@@ -81,7 +83,7 @@ export const NewList = createReactClass({
         <UU5.Bricks.Container>
           <UU5.Bricks.Row>
             <UU5.Bricks.Column colWidth="xs-12 s-8">
-              <h2>Create new list</h2>
+              <h2>Create new item</h2>
             </UU5.Bricks.Column>
           </UU5.Bricks.Row>
           <hr/>
@@ -91,20 +93,21 @@ export const NewList = createReactClass({
                 progressIndicator={<UU5.Bricks.Loading/>}
                 onCancel={
                   (opt) => {
-                    UU5.Environment.setRoute('list');
+                    UU5.Environment.setRoute({component: <ItemDetail item={this.props.item} list={this.props.list}/>})
                   }
                 }
                 onSave={(opt) => {
                   console.log(opt);
                   this.setState({
-                      listname: opt.values.name
+                      itemname: opt.values.name
                     }
                   );
                   // if (opt.isValid()) {
 
-                    Calls.listCreate({
+                    Calls.itemCreate({
                       data: {
-                        name: opt.values.name
+                        list: this.props.list.id,
+                        text: opt.values.text
                       },
                       done: opt.component.saveDone,
                       fail: opt.component.saveFail
@@ -113,22 +116,22 @@ export const NewList = createReactClass({
                 }}
                 onSaveDone={(opt) => {
                   opt.component.getAlertBus().setAlert({
-                    content: "List " + this.state.listname + " was created.",
+                    content: "Item " + this.state.itemname + " was created.",
                     colorSchema: "success"
                   });
                   opt.component.reset();
-                  UU5.Environment.setRoute("list");
+                  UU5.Environment.setRoute({component: <ListDetail list={this.props.list}/>});
                 }}
                 onSaveFail={(opt) => {
                   opt.component.getAlertBus().setAlert({
-                    content: "Creating of list failed.",
+                    content: "Creating of item failed.",
                     colorSchema: "danger"
                   });
                 }}
               >
-                <UU5.Forms.Text name="name"
-                                label="List name"
-                                placeholder="type name here ..."
+                <UU5.Forms.Text name="text"
+                                label="Item text"
+                                placeholder="type text here ..."
                                 required
                                 shouldValidateRequired={true}
                                 onValidate={this._validateName}/>
@@ -148,4 +151,4 @@ export const NewList = createReactClass({
   //@@viewOff:render
 });
 
-export default NewList;
+export default NewItem;

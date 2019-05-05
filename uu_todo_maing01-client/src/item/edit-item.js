@@ -9,29 +9,30 @@ import Config from "./config/config.js";
 import Calls from "calls";
 
 
-import "./new-list.less";
-import ListDetail from "./list-detail";
+import "./edit-item.less";
+import ItemDetail from "./item-detail";
 //@@viewOff:imports
 
-export const NewList = createReactClass({
+export const EditItem = createReactClass({
   //@@viewOn:mixins
-  mixins: [UU5.Common.BaseMixin, UU5.Common.RouteMixin, UU5.Common.CallsMixin, UU5.Forms.FormMixin],
+  mixins: [UU5.Common.BaseMixin, UU5.Common.RouteMixin, UU5.Common.CallsMixin, UU5.Forms.FormMixin, UU5.Common.ContentMixin],
   //@@viewOff:mixins
 
   //@@viewOn:statics
   statics: {
-    tagName: Config.TAG + "NewList",
+    tagName: Config.TAG + "EditItem",
     classNames: {
-      main: Config.CSS + "newList"
+      main: Config.CSS + "editItem"
     }, calls: {
-      listCreate: "listCreate",
+      editItem: "editItem",
     }
   },
   //@@viewOff:statics
 
   //@@viewOn:propTypes
   propTypes: {
-    lists: Proptypes.array,
+    item: Proptypes.object,
+    list: Proptypes.object,
   },
   //@@viewOff:propTypes
 
@@ -39,11 +40,7 @@ export const NewList = createReactClass({
   //@@viewOff:getDefaultProps
 
   //@@viewOn:reactLifeCycle
-  getInitialState() {
-    return {
-      lists: this.props.lists || 0
-    };
-  },
+
   componentWillMount() {
     this.setCalls(Calls);
   },
@@ -56,20 +53,13 @@ export const NewList = createReactClass({
   //@@viewOff:overriding
 
   //@@viewOn:private
-  _validateName(opt) {
-    console.log(opt);
-    console.log(this.state.lists);
-    this.state.lists.map((list) => {
-      console.log(list);
-      console.log(list.name);
-      console.log(opt.value);
-      if (list.name == opt.value) {
-        return {
-          feedback: "error",
-          message: "List with name " + list.name + " exist!"
-        };
-      }
-    })
+  _validateLength(opt){
+    if(opt.value.length > 1000){
+      return {
+        feedback: "error",
+        message: "Text is too long!"
+      };
+    }
   },
 
   //@@viewOff:private
@@ -81,7 +71,7 @@ export const NewList = createReactClass({
         <UU5.Bricks.Container>
           <UU5.Bricks.Row>
             <UU5.Bricks.Column colWidth="xs-12 s-8">
-              <h2>Create new list</h2>
+              <h2>Edit item {this.props.item.text}?</h2>
             </UU5.Bricks.Column>
           </UU5.Bricks.Row>
           <hr/>
@@ -91,61 +81,54 @@ export const NewList = createReactClass({
                 progressIndicator={<UU5.Bricks.Loading/>}
                 onCancel={
                   (opt) => {
-                    UU5.Environment.setRoute('list');
+                    UU5.Environment.setRoute({component: <ItemDetail item={this.props.item} list={this.props.list}/>})
                   }
                 }
                 onSave={(opt) => {
-                  console.log(opt);
-                  this.setState({
-                      listname: opt.values.name
-                    }
-                  );
-                  // if (opt.isValid()) {
 
-                    Calls.listCreate({
-                      data: {
-                        name: opt.values.name
-                      },
-                      done: opt.component.saveDone,
-                      fail: opt.component.saveFail
-                    });
-                  // };
+                  Calls.itemUpdate({
+                    data: {
+                      item:this.props.item.id,
+                      list: this.props.list.id,
+                      text: opt.values.text
+                    },
+                    done: opt.component.saveDone,
+                    fail: opt.component.saveFail
+                  });
                 }}
                 onSaveDone={(opt) => {
+
+                  console.log(opt);
                   opt.component.getAlertBus().setAlert({
-                    content: "List " + this.state.listname + " was created.",
+                    content: "Item  was renamed ",
                     colorSchema: "success"
                   });
                   opt.component.reset();
-                  UU5.Environment.setRoute("list");
+                  UU5.Environment.setRoute({component: <ItemDetail item={opt.dtoOut.data.item} list={this.props.list}/>});
                 }}
                 onSaveFail={(opt) => {
                   opt.component.getAlertBus().setAlert({
-                    content: "Creating of list failed.",
+                    content: opt.dtoOut.message,
                     colorSchema: "danger"
                   });
                 }}
               >
-                <UU5.Forms.Text name="name"
-                                label="List name"
-                                placeholder="type name here ..."
+
+                <UU5.Forms.TextArea name="text"
+                                label="New item text"
                                 required
+                                value={this.props.item.text}
                                 shouldValidateRequired={true}
-                                onValidate={this._validateName}/>
-                <UU5.Forms.Controls
-                  buttonValidate={true}
-                />
+                                onValidate={this._validateLength}/>
+                <UU5.Forms.Controls/>
               </UU5.Forms.Form>
             </UU5.Bricks.Column>
           </UU5.Bricks.Row>
         </UU5.Bricks.Container>
-        {console.log('data')}
-        {console.log(this.props)}
-        {console.log(this.state)}
       </UU5.Bricks.Div>
     );
   }
   //@@viewOff:render
 });
 
-export default NewList;
+export default EditItem;

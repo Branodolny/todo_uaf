@@ -1,7 +1,7 @@
 /**
  * Server calls of application client.
  */
-import { Uri } from "uu_appg01_core";
+import {Uri} from "uu_appg01_core";
 import * as UU5 from "uu5g04";
 import {Client} from "uu_appg01";
 import Plus4U5 from "uu_plus4u5g01";
@@ -32,17 +32,37 @@ let Calls = {
     let commandUri = Calls.getCommandUri("list/create");
     Calls.call("post", commandUri, dtoIn);
   },
-  editList(dtoIn){
+  editList(dtoIn) {
     let commandUri = Calls.getCommandUri("list/update");
     Calls.call("post", commandUri, dtoIn);
   },
-  deleteList(dtoIn){
+  deleteList(dtoIn) {
     let commandUri = Calls.getCommandUri("list/delete");
     Calls.call("post", commandUri, dtoIn);
   },
-  itemList(dtoIn){
+  itemList(dtoIn) {
     let commandUri = Calls.getCommandUri("item/list");
     Calls.call("get", commandUri, dtoIn);
+  },
+  itemGet(dtoIn) {
+    let commandUri = Calls.getCommandUri("item/get");
+    Calls.call("get", commandUri, dtoIn);
+  },
+  itemCreate(dtoIn) {
+    let commandUri = Calls.getCommandUri("item/create");
+    Calls.call("post", commandUri, dtoIn);
+  },
+  itemUpdate(dtoIn) {
+    let commandUri = Calls.getCommandUri("item/update");
+    Calls.call("post", commandUri, dtoIn);
+  },
+  itemDelete(dtoIn) {
+    let commandUri = Calls.getCommandUri("item/delete");
+    Calls.call("post", commandUri, dtoIn);
+  },
+  itemComplete(dtoIn) {
+    let commandUri = Calls.getCommandUri("item/complete");
+    Calls.call("post", commandUri, dtoIn);
   },
   /*
   For calling command on specific server, in case of developing client site with already deployed

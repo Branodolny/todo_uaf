@@ -11,6 +11,8 @@ import Calls from "calls";
 import "./list-detail.less";
 import DeleteList from "./delete-list";
 import EditList from "./edit-list";
+import NewItem from "../item/new-item";
+import ItemDetail from "../item/item-detail";
 //@@viewOff:imports
 
 export const ListDetail = createReactClass({
@@ -42,12 +44,17 @@ export const ListDetail = createReactClass({
   //@@viewOff:getDefaultProps
 
   //@@viewOn:reactLifeCycle
+  getInitialState() {
+    return {
+      list: this.props.list
+    };
+  },
   componentWillMount() {
     this.setCalls(Calls);
   },
   //@@viewOff:reactLifeCycle
   getOnLoadData_(props) {
-    return { list: props.list.id }; // only for demonstrative purposes
+    return { list: props.list.id };
   },
 
   onLoadSuccess_(dtoOut) {
@@ -65,36 +72,28 @@ export const ListDetail = createReactClass({
 
   //@@viewOn:private
 
-  // _loadData() {
-  //   this.setState({ callState: "loading" }, () => {
-  //     let call = this.getCall("onLoad")({
-  //       // list: "5cca032c7a869e016c64c0f4"
-  //       list : this.props.list
-  //     });
-  //     call({
-  //       done: (dtoOut) => {
-  //         this.setState({ callState: "ready", data: dtoOut.data });
-  //       },
-  //       fail: (dtoOut) => {
-  //         this.setState({ callState: "error", error: "Something was wrong..." });
-  //       }
-  //     })
-  //   });
-  // },
+
   _edit(){
-    UU5.Environment.setRoute({component: <EditList list={this.props.list}/>});
+    UU5.Environment.setRoute({component: <EditList list={this.state.list} />});
   },
   _delete(){
-    UU5.Environment.setRoute({component: <DeleteList list={this.props.list}/>});
+    UU5.Environment.setRoute({component: <DeleteList list={this.state.list}/>});
+  },
+  _itemDetail(item){
+    UU5.Environment.setRoute({component: <ItemDetail list={this.state.list} item={item}/>});
   },
   _listControll(){
     return(
       <UU5.Bricks.Row>
-        <UU5.Bricks.Button colorSchema="green"    onClick={this._edit}>Edit {this.props.list.name}</UU5.Bricks.Button>
-        <UU5.Bricks.Button colorSchema="pink"   onClick={this._delete}>Delete {this.props.list.name}</UU5.Bricks.Button>
+        {console.log(this.state)}
+        <UU5.Bricks.Button colorSchema="green"    onClick={this._edit}>Edit {this.state.list.name}</UU5.Bricks.Button>
+        <UU5.Bricks.Button colorSchema="pink"   onClick={this._delete}>Delete {this.state.list.name}</UU5.Bricks.Button>
       </UU5.Bricks.Row>
 
     );
+  },
+  _newItem(){
+    UU5.Environment.setRoute({component: <NewItem items={this.state.data.itemList} list={this.props.list}/>});
   },
   _getAllItem() {
     return (
@@ -106,7 +105,7 @@ export const ListDetail = createReactClass({
             <UU5.Bricks.Section content="TODO"/>
             <ol>
               {this.state.data.itemList.map((item, i) => {
-                return  <li key={i}><UU5.Bricks.Div><UU5.Bricks.Button colorSchema="blue"  bgStyle="outline" style='width:100%;' onClick={this._loadData}>{item.text}</UU5.Bricks.Button></UU5.Bricks.Div></li>
+                return  <li key={i}><UU5.Bricks.Div><UU5.Bricks.Button colorSchema="blue"  bgStyle="outline" style='width:100%;' onClick={() => this._itemDetail(item)} >{item.text}</UU5.Bricks.Button></UU5.Bricks.Div></li>
               })}
 
             </ol>
@@ -116,27 +115,7 @@ export const ListDetail = createReactClass({
       </UU5.Bricks.Container>
     );
   },
-  _getChildren() {
-    let content;
 
-    switch (this.getLoadFeedback()) {
-      case "loading":
-        content = <UU5.Bricks.Loading />;
-        break;
-      case "ready":
-        content = (
-          <UU5.Bricks.Blockquote colorSchema="success" background>
-            {this.state.data}
-          </UU5.Bricks.Blockquote>
-        );
-        break;
-      case "error":
-        content = <UU5.Bricks.Error content={this.state.error} />;
-        break;
-    }
-
-    return content;
-  },
 
   //@@viewOff:private
 
@@ -150,6 +129,10 @@ export const ListDetail = createReactClass({
                 <h2>{this.props.list.name}</h2>
               {this.getLoadFeedbackChildren(this._listControll)}
             </UU5.Bricks.Column>
+          </UU5.Bricks.Row>
+          <hr/>
+          <UU5.Bricks.Row>
+            <UU5.Bricks.Button colorSchema="green"  bgStyle="outline"  onClick={() => this._newItem()} ><UU5.Bricks.Icon icon="uu5-plus" />Item</UU5.Bricks.Button>
           </UU5.Bricks.Row>
           <hr/>
           <UU5.Bricks.Row>
