@@ -51,10 +51,10 @@ export const List = createReactClass({
 
   //@@viewOn:private
   _openItem(data){
-    UU5.Environment.setRoute({component: <ListDetail list={data}/>});
+    UU5.Environment.setRoute({component: <ListDetail list={data}/> ,  url: { useCase: "list-detail"}});
   },
   _newList(lists){
-    UU5.Environment.setRoute({component: <NewList lists={lists}/>});
+    UU5.Environment.setRoute({component: <NewList lists={lists}/>, url:{useCase:"new-list"}});
   },
 
   _getAllLists(dtoOut) {

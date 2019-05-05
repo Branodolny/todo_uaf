@@ -7,7 +7,7 @@ import "uu5g04-forms";
 import "uu5g04-bricks";
 import Config from "./config/config.js";
 import Calls from "calls";
-
+import List from "../routes/list";
 
 import "./new-list.less";
 import ListDetail from "./list-detail";
@@ -91,7 +91,7 @@ export const NewList = createReactClass({
                 progressIndicator={<UU5.Bricks.Loading/>}
                 onCancel={
                   (opt) => {
-                    UU5.Environment.setRoute('list');
+                    UU5.Environment.setRoute({component: <List />, url:{useCase:"list"}});
                   }
                 }
                 onSave={(opt) => {

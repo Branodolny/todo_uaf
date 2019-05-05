@@ -93,7 +93,7 @@ export const NewItem = createReactClass({
                 progressIndicator={<UU5.Bricks.Loading/>}
                 onCancel={
                   (opt) => {
-                    UU5.Environment.setRoute({component: <ItemDetail item={this.props.item} list={this.props.list}/>})
+                    UU5.Environment.setRoute({component: <ListDetail list={this.props.list}/>, url:{useCase:"detail-list"}})
                   }
                 }
                 onSave={(opt) => {
@@ -120,7 +120,7 @@ export const NewItem = createReactClass({
                     colorSchema: "success"
                   });
                   opt.component.reset();
-                  UU5.Environment.setRoute({component: <ListDetail list={this.props.list}/>});
+                  UU5.Environment.setRoute({component: <ListDetail list={this.props.list}/>,  url:{useCase:"detail-list"}});
                 }}
                 onSaveFail={(opt) => {
                   opt.component.getAlertBus().setAlert({

@@ -74,7 +74,7 @@ export const EditList = createReactClass({
                 progressIndicator={<UU5.Bricks.Loading/>}
                 onCancel={
                   (opt) => {
-                    UU5.Environment.setRoute({component: <ListDetail list={this.props.list}/>})
+                    UU5.Environment.setRoute({component: <ListDetail list={this.props.list}/>,url:{useCase:"detail-list"}})
                   }
                 }
                 onSave={(opt) => {
@@ -97,7 +97,7 @@ export const EditList = createReactClass({
                     colorSchema: "success"
                   });
                   opt.component.reset();
-                  UU5.Environment.setRoute({component: <ListDetail list={opt.dtoOut.data}/>});
+                  UU5.Environment.setRoute({component: <ListDetail list={opt.dtoOut.data}/>,url:{useCase:"detail-list"}});
                 }}
                 onSaveFail={(opt) => {
                   console.log(opt);

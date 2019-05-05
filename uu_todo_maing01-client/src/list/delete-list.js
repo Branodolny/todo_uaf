@@ -73,7 +73,7 @@ export const DeleteList = createReactClass({
                 progressIndicator={<UU5.Bricks.Loading/>}
                 onCancel={
                   (opt) => {
-                    UU5.Environment.setRoute({component: <ListDetail list={this.props.list}/>})
+                    UU5.Environment.setRoute({component: <ListDetail list={this.props.list}/>, url:{useCase:"detail-list"}})
                   }
                 }
                 onSave={(opt) => {

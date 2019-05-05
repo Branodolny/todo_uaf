@@ -11,6 +11,7 @@ import Calls from "calls";
 import "./item-detail.less";
 import DeleteItem from "./delete-item";
 import EditItem from "./edit-item";
+import ListDetail from "../list/list-detail";
 // import NewItem from "../item/new-item";
 //@@viewOff:imports
 
@@ -75,10 +76,10 @@ export const ItemDetail = createReactClass({
 
 
   _edit() {
-    UU5.Environment.setRoute({component: <EditItem list={this.props.list} item={this.props.item}/>});
+    UU5.Environment.setRoute({component: <EditItem list={this.props.list} item={this.props.item}/>, url:{useCase:"edit-item"}});
   },
   _delete() {
-    UU5.Environment.setRoute({component: <DeleteItem list={this.props.list} item={this.props.item}/>});
+    UU5.Environment.setRoute({component: <DeleteItem list={this.props.list} item={this.props.item}/>, url:{useCase:"delete-item"}});
   },
 
   _itemControll() {
