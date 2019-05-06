@@ -1,6 +1,7 @@
 //@@viewOn:imports
 import React from "react";
 import createReactClass from "create-react-class";
+import Proptypes from "prop-types";
 import * as UU5 from "uu5g04";
 import "uu5g04-bricks";
 import Config from "./config/config.js";
@@ -27,11 +28,9 @@ export const List = createReactClass({
   //@@viewOff:statics
 
   //@@viewOn:propTypes
-  // propTypes: {
-  //   name: Proptypes.string,
-  //   id: Proptypes.string,
-  //   lists: Proptypes.array
-  // },
+  propTypes: {
+    lists: Proptypes.array
+  },
   //@@viewOff:propTypes
 
   //@@viewOn:getDefaultProps
@@ -53,22 +52,31 @@ export const List = createReactClass({
   _openItem(data){
     UU5.Environment.setRoute({component: <ListDetail list={data}/> ,  url: { useCase: "list-detail"}});
   },
-  _newList(lists){
-    UU5.Environment.setRoute({component: <NewList lists={lists}/>, url:{useCase:"new-list"}});
+  // _newList(lists){
+  //   UU5.Environment.setRoute({component: <NewList lists={lists}/>, url:{useCase:"new-list"}});
+  // },
+  _closeModal(){
+    List.modal.close();
   },
-
+_createNewList(){},
   _getAllLists(dtoOut) {
     return (
       <UU5.Bricks.Container>
         <UU5.Bricks.Row>
-          <UU5.Bricks.Button colorSchema="green"  bgStyle="outline"  onClick={() => this._newList(dtoOut.data.itemList)} ><UU5.Bricks.Icon icon="uu5-plus" />List</UU5.Bricks.Button>
+          {/*<UU5.Bricks.Button colorSchema="green"  bgStyle="outline"  onClick={() => this._newList(dtoOut.data.itemList)} ><UU5.Bricks.Icon icon="uu5-plus" />List</UU5.Bricks.Button>*/}
+          <UU5.Bricks.Button
+            colorSchema="green"  bgStyle="outline"
+            onClick={() => List.modal.open({
+              header: "Create new list",
+              content: <NewList lists={dtoOut.data.itemList} closeModal={this._closeModal}/>
+            })}
+          ><UU5.Bricks.Icon icon="uu5-plus" />List</UU5.Bricks.Button>
         </UU5.Bricks.Row>
       <UU5.Bricks.Row>
         <UU5.Bricks.Column colWidth="xs-12 s-5">
 
         <UU5.Bricks.Section content="TODO List"/>
         <ol>
-          {console.log(this.state.dtoOut)}
           {dtoOut.data.itemList.map((list, i) => {
            return  <li key={i}><UU5.Bricks.Div><UU5.Bricks.Button colorSchema="blue"  bgStyle="outline" style='width:100%;' onClick={() => this._openItem(list)} >{list.name}</UU5.Bricks.Button></UU5.Bricks.Div></li>
           })}
@@ -76,11 +84,11 @@ export const List = createReactClass({
         </ol>
         </UU5.Bricks.Column>
       </UU5.Bricks.Row>
+        <UU5.Bricks.Modal ref_={modal => List.modal = modal}/>
       </UU5.Bricks.Container>
     );
   },
   _getChild(dtoOut) {
-    console.log(this.state.dtoOut);
     return <UU5.Bricks.Todo props={dtoOut}/>
   },
   //@@viewOff:private

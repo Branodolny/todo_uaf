@@ -9,7 +9,7 @@
     "license": "License Commercial",
     "asidRequired": true,
     "awidCount": 1,
-    "resourcePoolUri": "----- VALUE REQUIRED -----",
+    "resourcePoolUri": "ues:TGA-BT:DEV",
     "targetSlot": "BETA",
     "uuAppNodeSetMap": {
       "CMD": {
@@ -18,7 +18,7 @@
           "min": 1,
           "max": 1
         },
-        "appPackUri": null,
+        "appPackUri": "ues:TGA-BT:UU.TODO.MAING01/APPBOX-0.1.0:UU.TODO.MAING01/CMD-PACK",
         "runtimeStack": "UU.OS9/UC_NODEJS_STACK-V1.1"
       }
     },
@@ -28,7 +28,24 @@
         "alias": "primary"
       }
     },
-    "uuConfigMap": {
+    "uuConfigMap": {}
+  },
+  "uuSubAppInstance": {
+    "asid": "3b59178782f740b4a8962c210b8226ba",
+    "asidOwner": "13-2838-1",
+    "awidList": [
+      {
+        "awid": "fbbc007bb9214a4694b7d3eb0fbdde6f",
+        "awidOwner": "13-2838-1"
+      }
+    ],
+    "uuEeMap": {
+      "serviceUuee": "13-3435-1"
+    },
+    "uuAppObjectStoreMap": {
+      "OSID_1": {
+        "osid": "3f408f45393541b4b345061a6431ab11"
+      }
     }
   }
 }

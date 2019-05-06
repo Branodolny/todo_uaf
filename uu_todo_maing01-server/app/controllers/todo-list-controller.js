@@ -5,7 +5,6 @@ class TodoListController {
 
 
   create(ucEnv){
-    console.log(ucEnv.getDtoIn());
     return TodoListModel.create(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
   }
   get(ucEnv){

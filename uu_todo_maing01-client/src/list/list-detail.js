@@ -13,6 +13,7 @@ import DeleteList from "./delete-list";
 import EditList from "./edit-list";
 import NewItem from "../item/new-item";
 import ItemDetail from "../item/item-detail";
+import NewList from "./new-list";
 //@@viewOff:imports
 
 export const ListDetail = createReactClass({
@@ -58,7 +59,7 @@ export const ListDetail = createReactClass({
     },
 
     onLoadSuccess_(dtoOut) {
-      this.setState({data: dtoOut.data, loadFeedback: "ready"});
+      this.setState({itemList: dtoOut.data.itemList, loadFeedback: "ready"});
     },
 
     onLoadError_(dtoOut) {
@@ -72,7 +73,16 @@ export const ListDetail = createReactClass({
 
     //@@viewOn:private
 
-
+    _handleCreate(opt){
+      let lists = this.state.itemList;
+      lists.push(opt.dtoOut.data);
+      this.setState({
+        itemList: lists
+      });
+    },
+    _closeModal(){
+      ListDetail.modal.close();
+    },
     _edit() {
       UU5.Environment.setRoute({
         component: <EditList list={this.state.list}/>,
@@ -96,19 +106,23 @@ export const ListDetail = createReactClass({
     _listControll() {
       return (
         <UU5.Bricks.Row>
-          {console.log(this.state)}
           <UU5.Bricks.Button colorSchema="green" onClick={this._edit}>Edit {this.state.list.name}</UU5.Bricks.Button>
           <UU5.Bricks.Button colorSchema="pink" onClick={this._delete}>Delete {this.state.list.name}</UU5.Bricks.Button>
         </UU5.Bricks.Row>
 
       );
-    }
-    ,
-    _newItem() {
-      UU5.Environment.setRoute({
-        component: <NewItem items={this.state.data.itemList} list={this.props.list}/>,
-        url: {useCase: "new-item"}
-      });
+    },
+
+    _newItem12(){
+      return(
+        <UU5.Bricks.Button
+          colorSchema="green"  bgStyle="outline"
+          onClick={() => ListDetail.modal.open({
+            header: "Create new Item",
+            content: <NewItem items={this.state.itemList} list={this.props.list} closeModal={this._closeModal} handleCreate={this._handleCreate}/>
+          })}
+        ><UU5.Bricks.Icon icon="uu5-plus" />Item</UU5.Bricks.Button>
+      );
     }
     ,
     _getAllItem() {
@@ -120,7 +134,7 @@ export const ListDetail = createReactClass({
 
               <UU5.Bricks.Section content="TODO"/>
               <ol>
-                {this.state.data.itemList.map((item, i) => {
+                {this.state.itemList.map((item, i) => {
                   let itemText = item.text;
                   if (itemText.length > 10) {
                     itemText = itemText.substring(0, 10);
@@ -157,8 +171,9 @@ export const ListDetail = createReactClass({
             </UU5.Bricks.Row>
             <hr/>
             <UU5.Bricks.Row>
-              <UU5.Bricks.Button colorSchema="green" bgStyle="outline" onClick={() => this._newItem()}><UU5.Bricks.Icon
-                icon="uu5-plus"/>Item</UU5.Bricks.Button>
+              {/*<UU5.Bricks.Button colorSchema="green" bgStyle="outline" onClick={() => this._newItem()}><UU5.Bricks.Icon*/}
+              {/*  icon="uu5-plus"/>Item</UU5.Bricks.Button>*/}
+              {this.getLoadFeedbackChildren(this._newItem12)}
             </UU5.Bricks.Row>
             <hr/>
             <UU5.Bricks.Row>
@@ -166,6 +181,7 @@ export const ListDetail = createReactClass({
                 {this.getLoadFeedbackChildren(this._getAllItem)}
               </UU5.Bricks.Column>
             </UU5.Bricks.Row>
+            <UU5.Bricks.Modal ref_={modal => ListDetail.modal = modal}/>
           </UU5.Bricks.Container>
         </UU5.Bricks.Div>
       );

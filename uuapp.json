@@ -12,7 +12,7 @@
   "uu_todo_maing01-server": {
     "devkit": {
       "development": {
-        "appBoxLocationUri": "----- VALUE REQUIRED -----",
+        "appBoxLocationUri": "ues:TGA-BT:DEV",
         "appDeploymentUri": null
       }
     }

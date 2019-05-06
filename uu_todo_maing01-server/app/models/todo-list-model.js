@@ -80,7 +80,6 @@ class TodoListModel {
 
 
     let list = await this.dao.get(awid, dtoIn.id);
-    console.log(list);
     if (!list) {
       //A3
       throw new Errors.Get.listDoesNotExist(uuAppErrorMap, {Id: dtoIn.id});
@@ -106,7 +105,6 @@ class TodoListModel {
     dtoIn.id = dtoIn.list;
 
     let list = await this.dao.get(awid, dtoIn.id);
-    console.log(list);
     if (!list) {
       throw new Errors.Update.listDoesNotExist(uuAppErrorMap, {Id: dtoIn.id});
     }
@@ -159,7 +157,6 @@ class TodoListModel {
             list: dtoIn.id
           };
           items = await this.itemDao.listByListAndCompleted(awid, dtoIn, filter);
-          console.log(items);
         } catch (e) {
           throw new Errors.Delete.itemDoesNotExist({uuAppErrorMap}, {id: dtoIn.id});
         }

@@ -98,7 +98,6 @@ export const EditItem = createReactClass({
                 }}
                 onSaveDone={(opt) => {
 
-                  console.log(opt);
                   opt.component.getAlertBus().setAlert({
                     content: "Item  was renamed ",
                     colorSchema: "success"

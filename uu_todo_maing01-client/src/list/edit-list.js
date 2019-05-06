@@ -100,7 +100,6 @@ export const EditList = createReactClass({
                   UU5.Environment.setRoute({component: <ListDetail list={opt.dtoOut.data}/>,url:{useCase:"detail-list"}});
                 }}
                 onSaveFail={(opt) => {
-                  console.log(opt);
                   opt.component.getAlertBus().setAlert({
                     content: opt.dtoOut.message,
                     colorSchema: "danger"

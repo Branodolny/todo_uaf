@@ -85,7 +85,6 @@ export const ItemDetail = createReactClass({
   _itemControll() {
     return (
       <UU5.Bricks.Row>
-        {console.log(this.state)}
         <UU5.Bricks.Button colorSchema="green" onClick={this._edit}>Edit todo item</UU5.Bricks.Button>
         <UU5.Bricks.Button colorSchema="pink" onClick={this._delete}>Delete dodo item</UU5.Bricks.Button>
         <UU5.Bricks.Button colorSchema="blue"

@@ -96,7 +96,6 @@ export const DeleteList = createReactClass({
                   UU5.Environment.setRoute("list");
                 }}
                 onSaveFail={(opt) => {
-                  console.log(opt);
                   opt.component.getAlertBus().setAlert({
                     content: opt.dtoOut.message,
                     colorSchema: "danger"

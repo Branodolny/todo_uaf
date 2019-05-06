@@ -86,7 +86,6 @@ class TodoItemModel {
 
 
     let item = await this.dao.get(awid, dtoIn.id);
-    console.log(item);
     if (!item) {
       //A3
       throw new Errors.Get.itemDoesNotExist(uuAppErrorMap, {Id: dtoIn.id});
