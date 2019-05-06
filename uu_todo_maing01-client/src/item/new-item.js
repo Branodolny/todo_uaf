@@ -34,6 +34,8 @@ export const NewItem = createReactClass({
   propTypes: {
     items: Proptypes.array,
     list: Proptypes.object,
+    closeModal : Proptypes.func,
+    handleCreate: Proptypes.func
   },
   //@@viewOff:propTypes
 
@@ -59,12 +61,7 @@ export const NewItem = createReactClass({
 
   //@@viewOn:private
   _validateName(opt) {
-    console.log(opt);
-    console.log(this.state.lists);
     this.state.items.map((item) => {
-      console.log(item);
-      console.log(item.name);
-      console.log(opt.value);
       if (item.name == opt.value) {
         return {
           feedback: "error",
@@ -82,26 +79,22 @@ export const NewItem = createReactClass({
       <UU5.Bricks.Div {...this.getMainPropsToPass()}>
         <UU5.Bricks.Container>
           <UU5.Bricks.Row>
-            <UU5.Bricks.Column colWidth="xs-12 s-8">
+            <UU5.Bricks.Column colWidth="xs-12 s-12">
               <h2>Create new item</h2>
             </UU5.Bricks.Column>
           </UU5.Bricks.Row>
           <hr/>
           <UU5.Bricks.Row>
-            <UU5.Bricks.Column colWidth="xs-12 s-8">
+            <UU5.Bricks.Column colWidth="xs-12 s-12">
               <UU5.Forms.Form
                 progressIndicator={<UU5.Bricks.Loading/>}
                 onCancel={
                   (opt) => {
-                    UU5.Environment.setRoute({component: <ListDetail list={this.props.list}/>, url:{useCase:"detail-list"}})
+                   this.props.closeModal();
                   }
                 }
                 onSave={(opt) => {
-                  console.log(opt);
-                  this.setState({
-                      itemname: opt.values.name
-                    }
-                  );
+
                   // if (opt.isValid()) {
 
                     Calls.itemCreate({
@@ -116,11 +109,13 @@ export const NewItem = createReactClass({
                 }}
                 onSaveDone={(opt) => {
                   opt.component.getAlertBus().setAlert({
-                    content: "Item " + this.state.itemname + " was created.",
+                    content: "Item  was created.",
                     colorSchema: "success"
                   });
                   opt.component.reset();
-                  UU5.Environment.setRoute({component: <ListDetail list={this.props.list}/>,  url:{useCase:"detail-list"}});
+                  // UU5.Environment.setRoute({component: <ListDetail list={this.props.list}/>,  url:{useCase:"detail-list"}});
+                  this.props.handleCreate(opt);
+                  this.props.closeModal();
                 }}
                 onSaveFail={(opt) => {
                   opt.component.getAlertBus().setAlert({
@@ -142,9 +137,6 @@ export const NewItem = createReactClass({
             </UU5.Bricks.Column>
           </UU5.Bricks.Row>
         </UU5.Bricks.Container>
-        {console.log('data')}
-        {console.log(this.props)}
-        {console.log(this.state)}
       </UU5.Bricks.Div>
     );
   }

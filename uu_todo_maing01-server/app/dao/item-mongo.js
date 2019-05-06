@@ -41,7 +41,6 @@ class ItemMongo extends UuObjectDao {
 
   async listByListAndCompleted(awid, uuObject, filter = {}) {
     let pageInfo = uuObject.pageInfo;
-    console.log(filter);
     return await super.find(filter, pageInfo);
   }
 

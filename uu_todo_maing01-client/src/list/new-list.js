@@ -10,7 +10,6 @@ import Calls from "calls";
 import List from "../routes/list";
 
 import "./new-list.less";
-import ListDetail from "./list-detail";
 //@@viewOff:imports
 
 export const NewList = createReactClass({
@@ -32,6 +31,7 @@ export const NewList = createReactClass({
   //@@viewOn:propTypes
   propTypes: {
     lists: Proptypes.array,
+    closeModal :Proptypes.func
   },
   //@@viewOff:propTypes
 
@@ -41,7 +41,7 @@ export const NewList = createReactClass({
   //@@viewOn:reactLifeCycle
   getInitialState() {
     return {
-      lists: this.props.lists || 0
+      lists: this.props.lists
     };
   },
   componentWillMount() {
@@ -57,12 +57,9 @@ export const NewList = createReactClass({
 
   //@@viewOn:private
   _validateName(opt) {
-    console.log(opt);
-    console.log(this.state.lists);
+
     this.state.lists.map((list) => {
-      console.log(list);
-      console.log(list.name);
-      console.log(opt.value);
+
       if (list.name == opt.value) {
         return {
           feedback: "error",
@@ -80,22 +77,21 @@ export const NewList = createReactClass({
       <UU5.Bricks.Div {...this.getMainPropsToPass()}>
         <UU5.Bricks.Container>
           <UU5.Bricks.Row>
-            <UU5.Bricks.Column colWidth="xs-12 s-8">
+            <UU5.Bricks.Column colWidth="xs-12 s-12">
               <h2>Create new list</h2>
             </UU5.Bricks.Column>
           </UU5.Bricks.Row>
           <hr/>
           <UU5.Bricks.Row>
-            <UU5.Bricks.Column colWidth="xs-12 s-8">
+            <UU5.Bricks.Column colWidth="xs-12 s-12">
               <UU5.Forms.Form
                 progressIndicator={<UU5.Bricks.Loading/>}
                 onCancel={
                   (opt) => {
-                    UU5.Environment.setRoute({component: <List />, url:{useCase:"list"}});
+                    this.props.closeModal();
                   }
                 }
                 onSave={(opt) => {
-                  console.log(opt);
                   this.setState({
                       listname: opt.values.name
                     }
@@ -117,6 +113,7 @@ export const NewList = createReactClass({
                     colorSchema: "success"
                   });
                   opt.component.reset();
+                  this.props.closeModal();
                   UU5.Environment.setRoute("list");
                 }}
                 onSaveFail={(opt) => {
@@ -139,9 +136,6 @@ export const NewList = createReactClass({
             </UU5.Bricks.Column>
           </UU5.Bricks.Row>
         </UU5.Bricks.Container>
-        {console.log('data')}
-        {console.log(this.props)}
-        {console.log(this.state)}
       </UU5.Bricks.Div>
     );
   }

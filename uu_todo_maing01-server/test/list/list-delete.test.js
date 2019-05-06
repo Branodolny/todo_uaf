@@ -154,7 +154,6 @@ test("A5 - delete list fails", async () => {
   try {
     await ListModel.delete("awid", { id: "5ccb19964234c258ec645892" });
   } catch (e) {
-    console.log(e);
     expect(e.code).toEqual("uu-todo-main/list/deleteList/listDaoDeleteFailed");
     expect(e.message).toEqual("List delete failed.");
   }

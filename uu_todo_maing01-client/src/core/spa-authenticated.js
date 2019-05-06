@@ -17,6 +17,7 @@ import List from "../routes/list.js";
 
 
 import "./spa-authenticated.less";
+import NewList from "../list/new-list";
 //@@viewOff:imports
 
 const SpaAuthenticated = createReactClass({
@@ -77,6 +78,8 @@ const SpaAuthenticated = createReactClass({
         leftWidth="!xs-320px !s-320px !m-256px l-256px xl-256px"
       >
         <UU5.Common.Router
+          route=""
+          notFoundRoute="list"
           routes={{
             "": "list",
             // "login": {component: <Home identity={this.props.identity}/>},
