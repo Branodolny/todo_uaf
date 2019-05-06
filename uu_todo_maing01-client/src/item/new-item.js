@@ -108,12 +108,11 @@ export const NewItem = createReactClass({
                   // };
                 }}
                 onSaveDone={(opt) => {
-                  opt.component.getAlertBus().setAlert({
-                    content: "Item  was created.",
-                    colorSchema: "success"
-                  });
+                  // opt.component.getAlertBus().setAlert({
+                  //   content: "Item  was created.",
+                  //   colorSchema: "success"
+                  // });
                   opt.component.reset();
-                  // UU5.Environment.setRoute({component: <ListDetail list={this.props.list}/>,  url:{useCase:"detail-list"}});
                   this.props.handleCreate(opt);
                   this.props.closeModal();
                 }}

@@ -23,7 +23,10 @@ let Calls = {
   //   let commandUri = Calls.getCommandUri("loadDemoContent");
   //   Calls.call("get", commandUri, dtoIn);
   // },
-
+  getList(dtoIn) {
+    let commandUri = Calls.getCommandUri("list/get");
+    Calls.call("get", commandUri, dtoIn);
+  },
   listList(dtoIn) {
     let commandUri = Calls.getCommandUri("list/list");
     Calls.call("get", commandUri, dtoIn);

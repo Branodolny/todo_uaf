@@ -13,7 +13,7 @@ import NewList from "../list/new-list";
 
 export const List = createReactClass({
   //@@viewOn:mixins
-  mixins: [UU5.Common.BaseMixin, UU5.Common.RouteMixin, UU5.Common.LoadMixin, UU5.Common.ContentMixin,UU5.Common.ElementaryMixin],
+  mixins: [UU5.Common.BaseMixin, UU5.Common.RouteMixin, UU5.Common.LoadMixin, UU5.Common.ContentMixin, UU5.Common.ElementaryMixin],
   //@@viewOff:mixins
 
   //@@viewOn:statics
@@ -40,6 +40,7 @@ export const List = createReactClass({
   componentWillMount() {
     this.setCalls(Calls);
   },
+
   //@@viewOff:reactLifeCycle
 
   //@@viewOn:interface
@@ -49,42 +50,48 @@ export const List = createReactClass({
   //@@viewOff:overriding
 
   //@@viewOn:private
-  _openItem(data){
-    UU5.Environment.setRoute({component: <ListDetail list={data}/> ,  url: { useCase: "list-detail"}});
+  _openItem(data) {
+    UU5.Environment.setRoute({component: <ListDetail list={data}/>});
   },
   // _newList(lists){
   //   UU5.Environment.setRoute({component: <NewList lists={lists}/>, url:{useCase:"new-list"}});
   // },
-  _closeModal(){
+
+  _closeModal() {
     List.modal.close();
   },
-_createNewList(){},
+  _createNewList() {
+  },
   _getAllLists(dtoOut) {
     return (
       <UU5.Bricks.Container>
         <UU5.Bricks.Row>
           {/*<UU5.Bricks.Button colorSchema="green"  bgStyle="outline"  onClick={() => this._newList(dtoOut.data.itemList)} ><UU5.Bricks.Icon icon="uu5-plus" />List</UU5.Bricks.Button>*/}
           <UU5.Bricks.Button
-            colorSchema="green"  bgStyle="outline"
+            colorSchema="green" bgStyle="outline"
             onClick={() => List.modal.open({
               header: "Create new list",
-              content: <NewList lists={dtoOut.data.itemList} closeModal={this._closeModal}/>
+              content: <NewList lists={dtoOut.data.itemList} closeModal={this._closeModal} />
             })}
-          ><UU5.Bricks.Icon icon="uu5-plus" />List</UU5.Bricks.Button>
+          ><UU5.Bricks.Icon icon="uu5-plus"/>List</UU5.Bricks.Button>
         </UU5.Bricks.Row>
-      <UU5.Bricks.Row>
-        <UU5.Bricks.Column colWidth="xs-12 s-5">
+        <UU5.Bricks.Row>
+          <UU5.Bricks.Column colWidth="xs-12 s-5">
 
-        <UU5.Bricks.Section content="TODO List"/>
-        <ol>
-          {dtoOut.data.itemList.map((list, i) => {
-           return  <li key={i}><UU5.Bricks.Div><UU5.Bricks.Button colorSchema="blue"  bgStyle="outline" style='width:100%;' onClick={() => this._openItem(list)} >{list.name}</UU5.Bricks.Button></UU5.Bricks.Div></li>
-          })}
+            <UU5.Bricks.Section content="TODO List"/>
+            <ol>
+              {dtoOut.data.itemList.map((list, i) => {
+                return <li key={i}><UU5.Bricks.Div><UU5.Bricks.Button colorSchema="blue" bgStyle="outline"
+                                                                      style='width:100%;'
+                                                                      onClick={() => this._openItem(list)}>{list.name}</UU5.Bricks.Button></UU5.Bricks.Div>
+                </li>
+              })}
 
-        </ol>
-        </UU5.Bricks.Column>
-      </UU5.Bricks.Row>
+            </ol>
+          </UU5.Bricks.Column>
+        </UU5.Bricks.Row>
         <UU5.Bricks.Modal ref_={modal => List.modal = modal}/>
+
       </UU5.Bricks.Container>
     );
   },

@@ -7,7 +7,6 @@ import "uu5g04-forms";
 import "uu5g04-bricks";
 import Config from "./config/config.js";
 import Calls from "calls";
-import List from "../routes/list";
 
 import "./new-list.less";
 //@@viewOff:imports
@@ -31,7 +30,8 @@ export const NewList = createReactClass({
   //@@viewOn:propTypes
   propTypes: {
     lists: Proptypes.array,
-    closeModal :Proptypes.func
+    closeModal :Proptypes.func,
+    showAlert:Proptypes.func
   },
   //@@viewOff:propTypes
 
@@ -92,11 +92,7 @@ export const NewList = createReactClass({
                   }
                 }
                 onSave={(opt) => {
-                  this.setState({
-                      listname: opt.values.name
-                    }
-                  );
-                  // if (opt.isValid()) {
+
 
                     Calls.listCreate({
                       data: {
@@ -108,10 +104,10 @@ export const NewList = createReactClass({
                   // };
                 }}
                 onSaveDone={(opt) => {
-                  opt.component.getAlertBus().setAlert({
-                    content: "List " + this.state.listname + " was created.",
-                    colorSchema: "success"
-                  });
+                  // opt.component.getAlertBus().setAlert({
+                  //   content: "List  was created.",
+                  //   colorSchema: "success"
+                  // });
                   opt.component.reset();
                   this.props.closeModal();
                   UU5.Environment.setRoute("list");

@@ -100,7 +100,7 @@ export const DeleteItem = createReactClass({
                     colorSchema: "success"
                   });
                   opt.component.reset();
-                  UU5.Environment.setRoute({component: <ListDetail list={this.props.list}/>, url:{useCase:"detail-list"}})
+                  UU5.Environment.setRoute({component: <ListDetail list={this.props.list}/>})
                 }}
                 onSaveFail={(opt) => {
                   opt.component.getAlertBus().setAlert({

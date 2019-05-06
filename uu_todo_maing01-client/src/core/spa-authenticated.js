@@ -18,6 +18,7 @@ import List from "../routes/list.js";
 
 import "./spa-authenticated.less";
 import NewList from "../list/new-list";
+import ListDetail from "../list/list-detail";
 //@@viewOff:imports
 
 const SpaAuthenticated = createReactClass({
@@ -84,6 +85,7 @@ const SpaAuthenticated = createReactClass({
             "": "list",
             // "login": {component: <Home identity={this.props.identity}/>},
             "about": {component: <About identity={this.props.identity}/>},
+            "list-detail": {component: <ListDetail/>},
             "list": {component: <List/>}
           }}
           controlled={false}
